@@ -1,0 +1,151 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Café Grão Bom - Links</title>
+
+  <!-- tailwind -->
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+
+  <style>
+    /* css do body */
+    body {
+      background-color: #064e3b;
+      font-family: Arial, sans-serif;
+    }
+
+    /* css dos botoes (isso aqui eu fiz sem tailwind pra treinar) */
+    .botao {
+      display: block;
+      background-color: #fbbf24;
+      color: #064e3b;
+      font-weight: bold;
+      padding: 14px;
+      border-radius: 12px;
+      margin-bottom: 12px;
+      text-decoration: none;
+      transition: 0.2s;
+    }
+
+    .botao:hover {
+      background-color: #ffffff;
+      transform: translateY(-3px);
+    }
+
+    /* bolinha do status */
+    .bolinha {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      margin-right: 6px;
+    }
+  </style>
+</head>
+
+<body class="min-h-screen text-white p-6">
+
+  <div class="max-w-sm mx-auto text-center">
+
+    <!-- logo -->
+    <div class="w-28 h-28 mx-auto mt-6 rounded-full bg-amber-400 flex items-center justify-center text-6xl">
+      ☕
+    </div>
+
+    <h1 class="text-3xl font-bold mt-4">Café Grão Bom</h1>
+    <p class="mt-1 text-emerald-100">Cafés especiais, bolos e pão de queijo quentinho</p>
+
+    <!-- status (aberto ou fechado), o javascript preenche -->
+    <p class="mt-4 bg-emerald-900 rounded-full inline-block px-4 py-2 text-sm">
+      <span id="bolinha" class="bolinha"></span><span id="status">carregando...</span>
+    </p>
+
+    <!-- links -->
+    <div class="mt-6">
+      <a href="#" class="botao">📖 Ver cardápio</a>
+      <a href="#" class="botao">🛵 Pedir pelo delivery</a>
+      <a href="#" class="botao">📍 Como chegar</a>
+      <a href="#" class="botao">📸 Instagram</a>
+      <a href="#" class="botao">💬 WhatsApp</a>
+    </div>
+
+    <!-- cupom -->
+    <div class="mt-6 border-2 border-dashed border-amber-400 rounded-xl p-4">
+      <p class="text-sm">Cupom de 10% na primeira compra:</p>
+      <p class="text-2xl font-bold text-amber-400 my-1">GRAOBOM10</p>
+      <button id="btnCupom" onclick="copiarCupom()" class="bg-amber-400 text-emerald-900 font-bold rounded-lg px-4 py-2 mt-1">
+        Copiar cupom
+      </button>
+    </div>
+
+    <!-- cafe do dia -->
+    <div class="mt-6 bg-emerald-900 rounded-xl p-4">
+      <p class="text-sm">Não sabe o que pedir?</p>
+      <button onclick="sortearCafe()" class="bg-white text-emerald-900 font-bold rounded-lg px-4 py-2 mt-2">
+        🎲 Sortear um café
+      </button>
+      <p id="resultado" class="mt-3 text-lg font-bold text-amber-400"></p>
+    </div>
+
+    <p class="mt-8 text-xs text-emerald-200">Seg a Sáb: 7h às 19h</p>
+    <p class="mt-1 text-xs text-emerald-200">© 2026 Café Grão Bom</p>
+
+  </div>
+
+  <script>
+    // ---------- STATUS ABERTO/FECHADO ----------
+    var agora = new Date();
+    var hora = agora.getHours();
+    var dia = agora.getDay(); // 0 = domingo
+
+    var textoStatus = document.getElementById("status");
+    var bolinha = document.getElementById("bolinha");
+
+    // aberto de segunda a sabado das 7 as 19
+    if (dia != 0 && hora >= 7 && hora < 19) {
+      textoStatus.innerHTML = "Aberto agora";
+      bolinha.style.backgroundColor = "#4ade80"; // verde
+    } else {
+      textoStatus.innerHTML = "Fechado agora";
+      bolinha.style.backgroundColor = "#f87171"; // vermelho
+    }
+
+    // ---------- COPIAR CUPOM ----------
+    function copiarCupom() {
+      var botao = document.getElementById("btnCupom");
+
+      // tenta copiar (pode nao funcionar em alguns navegadores)
+      try {
+        navigator.clipboard.writeText("GRAOBOM10");
+      } catch (erro) {
+        console.log("nao deu pra copiar", erro);
+      }
+
+      // muda o texto do botao
+      botao.innerHTML = "Copiado! ✅";
+
+      // volta ao normal depois de 2 segundos
+      setTimeout(function () {
+        botao.innerHTML = "Copiar cupom";
+      }, 2000);
+    }
+
+    // ---------- SORTEAR CAFE ----------
+    function sortearCafe() {
+      var cafes = [
+        "Espresso ☕",
+        "Cappuccino cremoso 🥛",
+        "Café gelado 🧊",
+        "Mocaccino 🍫",
+        "Coado na hora ♨️"
+      ];
+
+      var numero = Math.floor(Math.random() * cafes.length);
+      document.getElementById("resultado").innerHTML = cafes[numero];
+    }
+  </script>
+
+</body>
+</html>
